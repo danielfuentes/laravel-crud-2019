@@ -1,3 +1,17 @@
+## Consideraciones al momento de clonar este repositorio
+
+- Es fundamental que tengas creada la base de datos, si deseas usar la misma que yo uso, te dejo la base de datos completa en la carpeta bd, allí tienes el script, lo único que debes hacer es importar la base de datos en tu equipo, para ello puedes usar Workbench, PHPMyadmin, SQL Pro o cualquier editor de base de datos que desees.
+
+- Recuerda que debes crear tu archivo .env en base al que tienes en mi proyecto .env.example y dentro de él debes colocar tu conexión a la base de datos, tal como si estuvieras haciendo uso de PHP - PDO, pero ya sabes que debes disponer esa información en tu archivo .env
+
+- No te olvides de ejecutar el comando: php artisan key:generate
+
+- Si trabajas con LINUX, es conveniente que ejecutes el comando para darle privilegios de escritura sobre la carpeta del proyecto: sudo chmod -R 777 /var/www/html   (Se que por seguridad esto no se hace, pero si estas en tu equipo personal no hay problemas)
+
+- Finalmente levanta el servidor y listo, ejecutando el comando: php artisan serve
+
+- Espero te sea de utilidad
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
