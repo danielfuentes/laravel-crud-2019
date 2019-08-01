@@ -25,4 +25,5 @@ class MovieController extends Controller
         return view('movies.detallePelicula')->with('detalle',$detalle);
         
     }
+
 }
