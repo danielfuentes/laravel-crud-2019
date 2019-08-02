@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.main')
 @section('contenido')
 <main>
     <h2 class="__peliculasdeldia">Detalle de la película</h2>

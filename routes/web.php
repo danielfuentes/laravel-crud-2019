@@ -18,6 +18,8 @@ Route::get('/proximosEstrenos','MovieController@index');
 //Aquí voy a crear una ruta pero ahora para ver el detalle de la película
 Route::get('/detallePelicula/{id}', 'MovieController@show');
 
+Route::get('/incluirPelicula','MovieController@create');
+Route::post('/savePelicula','MovieController@save');
 
 //Route::get('/', function () {
 //    return view('welcome');

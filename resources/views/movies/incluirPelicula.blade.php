@@ -1,18 +1,29 @@
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('contenido')
   <section class="principal">
        <article class="nuevas" id="peliculas">
            <div class="peliculas">
 
-             <form  action="/saveMovie" method="POST">
+             <form  action="/savePelicula" method="POST">
+                @csrf
                <h2 class="__peliculasdeldia">Nueva Película</h2>
                <br>
                <br>
                <div class="form-row">
                 <div  class="form-group col-4 offset-4 ">
+                    @if (count($errors)>0)
+                        <ul class="alert alert-danger" >
+                            @foreach ($errors->all() as $error)
+
+                                <li>{{$error}} </li>
+                            
+                            @endforeach
+                        </ul>    
+                    @endif
+                    
                     <label for="titulo">Título</label>
-                    <input class="form-control" type="text" name="title" id="title" value=""/>
+                    <input class="form-control" type="text" name="title" id="title" value="{{old('title')}} "/>
                 </div>
                 <div  class="form-group col-4 offset-4">
                     <label for="rating">Rating</label>
@@ -35,7 +46,10 @@
                 <div  class="form-group col-4 offset-4">
                     <label for="genre">Genero</label>
                     <select class="form-control" name="genre_id">
-                      
+                      @foreach ($generos as $genero)
+                        <option value="{{$genero->id}}">{{$genero->name}} </option>
+                          
+                      @endforeach
                     </select>
                 </div>
                 <div class="form-group col-4 offset-4">

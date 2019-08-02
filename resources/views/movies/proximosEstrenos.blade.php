@@ -1,10 +1,11 @@
-@extends('layouts.master')
+@extends('layouts.main')
 @section('contenido')
 <main>
     <h2 class="__peliculasdeldia">Próximos Estrenos</h2>
 
     <div class="__peliculas_blade row">
       <div class="d-flex card col-12  __itempelicula" style="width: 18rem;">
+        <a href="/incluirPelicula">Incluir película</a>
         <table class="table" >
             <thead>
                 <tr>
@@ -36,10 +37,14 @@
                         </td>
                         </tr>
                     @endforeach
+
                     
                 
             </tbody>
         </table>
+        <div>
+            {{$peliculas->links()}}
+        </div>
         
       </div>
         
