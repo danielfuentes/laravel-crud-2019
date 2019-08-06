@@ -5,9 +5,10 @@
        <article class="nuevas" id="peliculas">
            <div class="peliculas">
 
-             <form  action="/savePelicula" method="POST">
+             <form  action="" method="POST" enctype="multipart/form-data">
+                {{ method_field('PATCH') }}
                 @csrf
-               <h2 class="__peliculasdeldia">Nueva Película</h2>
+               <h2 class="__peliculasdeldia">Editar Película</h2>
                <br>
                <br>
                <div class="form-row">
@@ -23,29 +24,30 @@
                     @endif
                     
                     <label for="titulo">Título</label>
-                    <input class="form-control" type="text" name="title" id="title" value="{{old('title')}} "/>
+                    <input class="form-control" type="text" name="title" id="title" value="{{ $pelicula->title }}"/>
                 </div>
                 <div  class="form-group col-4 offset-4">
                     <label for="rating">Rating</label>
-                    <input class="form-control" type="text" name="rating" id="rating" value="{{old('rating')}}"/>
+                    <input class="form-control" type="text" name="rating" id="rating" value="{{$pelicula->rating}}"/>
                 </div>
                 <div  class="form-group col-4 offset-4">
                     <label for="premios">Premios</label>
-                    <input class="form-control" type="text" name="awards" id="awards" value="{{old('awards')}}"/>
+                    <input class="form-control" type="text" name="awards" id="awards" value="{{$pelicula->awards}}"/>
                 </div>
                 <div  class="form-group col-4 offset-4">
                     <label for="length">Duración</label>
-                    <input class="form-control" type="text" name="length" id="length" value="{{old('length')}}"/>
+                    <input class="form-control" type="text" name="length" id="length" value="{{$pelicula->length}}"/>
                 </div>
 
                 <div  class="form-group col-4 offset-4">
                     <label for="duracion">Estreno</label>
-                    <input class="form-control" type="date" name="release_date" id="release_date" value="{{old('release_date')}}"/>
+                    <input class="form-control" type="date" name="release_date" id="release_date" value="{{$pelicula->release_date}}"/>
                 </div>
                 
                 <div  class="form-group col-4 offset-4">
                     <label for="genre">Genero</label>
                     <select class="form-control" name="genre_id">
+                         <option value="{{ $idGenero }}" selected>{{ $nombreGenero->name }}</option>
                       @foreach ($generos as $genero)
                         <option value="{{$genero->id}}">{{$genero->name}} </option>
                           
@@ -53,7 +55,7 @@
                     </select>
                 </div>
                 <div class="form-group col-4 offset-4">
-                    <input type="submit" class="btn btn-primary" value="Agregar Película">
+                    <input type="submit" class="btn btn-primary" value="Modificar Película">
                 </div>
             </div>
             </form>

@@ -21,6 +21,16 @@ Route::get('/detallePelicula/{id}', 'MovieController@show');
 Route::get('/incluirPelicula','MovieController@create');
 Route::post('/savePelicula','MovieController@save');
 
+//Aquí les realice el método para buscar una película
+Route::get('/buscar', 'MovieController@search');
+
+// Esta es la ruta que procesa el formulario de edición. Noten que coloque PATCH.
+// Tambien pude colocar PUT, son lo mismo. Noten que viaja por el método get 
+Route::get('/pelicula/{id}/update', 'MovieController@edit');
+//Fijense que es la misma ruta, pero una viaje por get y la otra viaja por patch
+Route::patch('/pelicula/{id}/update', 'MovieController@update');
+
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});

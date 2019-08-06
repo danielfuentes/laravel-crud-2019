@@ -55,9 +55,85 @@ class MovieController extends Controller
         $nuevaPelicula = new Movie($request->all());
         $nuevaPelicula->save();
         return redirect('proximosEstrenos');
+    }
+
+    //Amigas y amigos. Aquí desarrolle el método para hacer la busqueda de la película, para ustedes puede resultar muy útil para que ejecuten busquedas de productos, de posteos, de preguntas, de lo que deseen que el usuario pueda buscar en su propuesta.
+    public function search(Request $request)
+    {
+        $input = $request->input('busqueda');
+        $peliculas = Movie::where('title','LIKE','%'.$input.'%')->paginate(6);
+        return view('movies.proximosEstrenos')->with('peliculas',$peliculas);
+        
+    }
 
 
+    //Amigas y amigos. Aquí les cree el método de Editar, este sólo muestra los datos de la película
+    public function edit($id)
+    {
+        
+        // Para cargar la vista de edición, en este caso tengo que mandarla con la pelicula (con su ID) y ademas su genero actual buscandolo individualmente ($genero), Mas los posibles generos que puedan llegar a tomar su lugar ($generos)
+
+
+        $generos = Genre::all();
+
+        $pelicula = Movie::find($id);
+        //Esto lo hago para lograr atrapar el genero que esta guardado en la base de datos, la idea luego es poder enviarlo a la vista
+        $idGenero = $pelicula->genre_id;
+        $nombreGenero = Genre::find($idGenero);
+        //dd($idGenero);
+        //dd($nombreGenero);
+        //Esto lo hago para chequear los datos que vienen de la base de datos
+        //dd($pelicula);
+
+        // si el encadenamiento de metodos se extiende mucho...
+        // return view('movies.editarPelicula')->with('pelicula', $pelicula)->with('genero', $genero)->with('generos', $generos);
+        // lo podemos enviar de la siguiente forma:
+        return view('movies.editarPelicula')
+            ->with('pelicula', $pelicula)
+            ->with('idGenero', $idGenero)
+            ->with('nombreGenero',$nombreGenero)
+            ->with('generos', $generos);
 
     }
+
+    public function update(Request $request, $id)
+    {
+        // Aquí les dejo este dd comentado para que siempre tengan pendiente de ir viendo los cambios!
+        //dd($request->all());
+        // Aquí dispongo las mismas validaciones que creamos en el método de incluir película        
+        $reglas =[
+            'title' => 'required',
+            'rating' => 'required|numeric',
+            'awards' => 'required|numeric',
+            'length' => 'required|numeric',
+            'genre_id' => 'required',
+            'release_date' => 'date'
+        ];
+
+        $mensajes = [
+            'required' => 'El campo :attribute es obligatorio',
+            //'unique' => 'El campo :attribute ya existe',
+            'numeric' => 'El campo :attribute debe ser numérico',
+            'date' => 'El campo :attribute debe ser una fecha válida'
+        ];
+
+        $this->validate($request,$reglas,$mensajes);
+        //Aquí me sercioro que en realidad busque la película editada
+        $pelicula = Movie::find($id);
+        // Para reemplazar el dato que viene y así cambiarlo por el que el usuario dispone nuevo, lo ejecuto por medio de un if ternario
+         $pelicula->title = $request->input('title') !== $pelicula->title ? $request->input('title') : $pelicula->title;
+         // El titulo va a ser igual a lo que salga de este if ternario.
+         $pelicula->rating = $request->input('rating') !== $pelicula->rating ? $request->input('rating') : $pelicula->rating;
+         $pelicula->awards = $request->input('awards') !== $pelicula->awards ? $request->input('awards') : $pelicula->awards;
+         $pelicula->length = $request->input('length') !== $pelicula->length ? $request->input('length') : $pelicula->length;
+         $pelicula->release_date = $request->input('release_date') !== $pelicula->release_date ? $request->input('release_date') : $pelicula->release_date;
+         $pelicula->genre_id = $request->input('genre_id') !== $pelicula->genre_id ? $request->input('genre_id') : $pelicula->genre_id;
+         //Luego de hacer esta comparación entre lo que viene de la base de datos y lo que el usuario coloca o modifica, ,lo que hacemos es guardar los datos.
+         $pelicula->save();
+         // y vamos a ver los cambios:
+         return redirect('proximosEstrenos');
+
+    }
+
 
 }

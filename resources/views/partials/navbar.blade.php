@@ -33,8 +33,8 @@
 
           </div>
           <div class="d-flex __busqueda">
-            <form class="d-flex form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="Busca tu pelicula" aria-label="Search">
+            <form action="/buscar" method="get" class="d-flex form-inline">
+              <input class="form-control mr-sm-2" type="text" placeholder="Busca tu pelicula..." aria-label="Search" name="busqueda">
               <button class="btn btn-dark my-2 my-sm-0 __buscar" type="submit">Buscar</button>
             </form>
             </div>

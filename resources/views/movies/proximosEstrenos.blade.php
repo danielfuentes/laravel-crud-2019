@@ -30,7 +30,7 @@
                             <a href="/detallePelicula/{{$pelicula->id}}">Ver</a>
                         </td>
                         <td>
-                            <a href="#">Editar</a>
+                            <a href="/pelicula/{{$pelicula->id}}/update">Editar</a>
                         </td>
                         <td>
                             <a href="#">Eliminar</a>
