@@ -30,6 +30,8 @@ Route::get('/pelicula/{id}/update', 'MovieController@edit');
 //Fijense que es la misma ruta, pero una viaje por get y la otra viaja por patch
 Route::patch('/pelicula/{id}/update', 'MovieController@update');
 
+//Aquí programamos la ruta para eliminar una película
+Route::get('/eliminarPelicula/{id}','MovieController@destroy');
 
 //Route::get('/', function () {
 //    return view('welcome');

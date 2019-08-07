@@ -60,8 +60,10 @@ class MovieController extends Controller
     //Amigas y amigos. Aquí desarrolle el método para hacer la busqueda de la película, para ustedes puede resultar muy útil para que ejecuten busquedas de productos, de posteos, de preguntas, de lo que deseen que el usuario pueda buscar en su propuesta.
     public function search(Request $request)
     {
+            
         $input = $request->input('busqueda');
-        $peliculas = Movie::where('title','LIKE','%'.$input.'%')->paginate(6);
+        
+        $peliculas = Movie::where('title','LIKE','%'.$input.'%')->paginate(20);
         return view('movies.proximosEstrenos')->with('peliculas',$peliculas);
         
     }
@@ -135,5 +137,11 @@ class MovieController extends Controller
 
     }
 
-
+        //Aquí les creo el método para eliminar (destroy) 
+        public function destroy($id){
+            $peliculaBorrar = Movie::find($id);
+            //dd($peliculaBorrar);
+            $peliculaBorrar->delete();
+            return redirect('proximosEstrenos');
+        }
 }
