@@ -12,8 +12,9 @@ class Movie extends Model
     //protected $timeStamps = true;
     protected $guarded = [];
 
-    public function genres(){
-        return $this->belongsTo(Genre::class);
+    public function genres()
+    {
+        return $this->belongsTo(Genre::class, 'genre_id');
     }
-    
 }
+

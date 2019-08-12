@@ -19,17 +19,21 @@ class MovieController extends Controller
         return view('movies.proximosEstrenos')->with('peliculas',$peliculas);
     }
     //Procedo a crear el otro método, pero ahora para mostrar el detalle de la película
-    public function show($id){
-        //Aquí almaceno en una variable el detalle, sólo del registro seleccionado
+    public function show($id)
+    {
         $detalle = Movie::find($id);
+
+        //Aquí almaceno en una variable el detalle, sólo del registro seleccionado
         //Aquí retorno a la vista el detalle de la película seleccionada
-        return view('movies.detallePelicula')->with('detalle',$detalle);
-        
+        return view('movies.detallePelicula')->with('detalle',$detalle);        
     }
 
-    public function create(){
+    public function create()
+    {
+        $this->authorize('create', Movie::class);
+
         $generos = Genre::all();
-        //dd($generos);
+
         return view('movies.incluirPelicula')->with('generos',$generos);
     }
 
@@ -79,21 +83,22 @@ class MovieController extends Controller
         $generos = Genre::all();
 
         $pelicula = Movie::find($id);
+
         //Esto lo hago para lograr atrapar el genero que esta guardado en la base de datos, la idea luego es poder enviarlo a la vista
         $idGenero = $pelicula->genre_id;
         $nombreGenero = Genre::find($idGenero);
         //dd($idGenero);
         //dd($nombreGenero);
         //Esto lo hago para chequear los datos que vienen de la base de datos
-        //dd($pelicula);
+        // dd($pelicula->genres);
 
         // si el encadenamiento de metodos se extiende mucho...
         // return view('movies.editarPelicula')->with('pelicula', $pelicula)->with('genero', $genero)->with('generos', $generos);
         // lo podemos enviar de la siguiente forma:
         return view('movies.editarPelicula')
             ->with('pelicula', $pelicula)
-            ->with('idGenero', $idGenero)
-            ->with('nombreGenero',$nombreGenero)
+            // ->with('idGenero', $idGenero)
+            // ->with('nombreGenero',$nombreGenero)
             ->with('generos', $generos);
 
     }
@@ -119,25 +124,34 @@ class MovieController extends Controller
             'date' => 'El campo :attribute debe ser una fecha válida'
         ];
 
-        $this->validate($request,$reglas,$mensajes);
+        // $this->validate($request,$reglas,$mensajes);
+        
         //Aquí me sercioro que en realidad busque la película editada
         $pelicula = Movie::find($id);
+        //Amigas y amigos. Para no usar lo que abajo está en comentarios y efectuarlo de una manera mas rápida podemos valernos de una función de PHP llamada array_dif: La cual Calcula y determina la diferencia entre arrays.
+        //El llamado al método ->toArray(), lo que hace es convertir la colección en un array PHP plano. Si los elementos de la colección //son modelos Eloquent, los modelos también se convertirán a arrays, ampliar la información en: https://docs.laraveles.com/docs/5.5/collections#method-toarray
+        $changes = array_diff($request->all(), $pelicula->toArray());
+
+        $pelicula->update($changes);
+        
+        //Colocando las dos líneas anteriores, nos ahorramos todo lo que programamos abajo, para guardar los cambios de los campos por parte del usuario.    
+
         // Para reemplazar el dato que viene y así cambiarlo por el que el usuario dispone nuevo, lo ejecuto por medio de un if ternario
-         $pelicula->title = $request->input('title') !== $pelicula->title ? $request->input('title') : $pelicula->title;
+        //  $pelicula->title = $request->input('title') !== $pelicula->title ? $request->input('title') : $pelicula->title;
          // El titulo va a ser igual a lo que salga de este if ternario.
-         $pelicula->rating = $request->input('rating') !== $pelicula->rating ? $request->input('rating') : $pelicula->rating;
-         $pelicula->awards = $request->input('awards') !== $pelicula->awards ? $request->input('awards') : $pelicula->awards;
-         $pelicula->length = $request->input('length') !== $pelicula->length ? $request->input('length') : $pelicula->length;
-         $pelicula->release_date = $request->input('release_date') !== $pelicula->release_date ? $request->input('release_date') : $pelicula->release_date;
-         $pelicula->genre_id = $request->input('genre_id') !== $pelicula->genre_id ? $request->input('genre_id') : $pelicula->genre_id;
+        //  $pelicula->rating = $request->input('rating') !== $pelicula->rating ? $request->input('rating') : $pelicula->rating;
+        //  $pelicula->awards = $request->input('awards') !== $pelicula->awards ? $request->input('awards') : $pelicula->awards;
+        //  $pelicula->length = $request->input('length') !== $pelicula->length ? $request->input('length') : $pelicula->length;
+        //  $pelicula->release_date = $request->input('release_date') !== $pelicula->release_date ? $request->input('release_date') : $pelicula->release_date;
+        //  $pelicula->genre_id = $request->input('genre_id') !== $pelicula->genre_id ? $request->input('genre_id') : $pelicula->genre_id;
          //Luego de hacer esta comparación entre lo que viene de la base de datos y lo que el usuario coloca o modifica, ,lo que hacemos es guardar los datos.
-         $pelicula->save();
+        //  $pelicula->save();
+
          // y vamos a ver los cambios:
          return redirect('proximosEstrenos');
-
     }
 
-        //Aquí les creo el método para eliminar (destroy) 
+        //Aquí les creo el método para eliminar (destroy)
         public function destroy($id){
             $peliculaBorrar = Movie::find($id);
             //dd($peliculaBorrar);

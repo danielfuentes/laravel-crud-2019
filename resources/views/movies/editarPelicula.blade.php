@@ -43,11 +43,13 @@
                     <label for="duracion">Estreno</label>
                     <input class="form-control" type="date" name="release_date" id="release_date" value="{{$pelicula->release_date}}"/>
                 </div>
-                
+
                 <div  class="form-group col-4 offset-4">
                     <label for="genre">Genero</label>
                     <select class="form-control" name="genre_id">
-                         <option value="{{ $idGenero }}" selected>{{ $nombreGenero->name }}</option>
+                         <option value="{{ $pelicula->genre_id }}" selected>
+                            {{ $pelicula->genres->name }}
+                        </option>
                       @foreach ($generos as $genero)
                         <option value="{{$genero->id}}">{{$genero->name}} </option>
                           
